@@ -5,12 +5,17 @@ import express from 'express'
 import { sendResponse } from './utils/response.ts';
 import authRouter from './auth/auth.routes.ts';
 import mainRouter from "./main/routers/main.router.ts";
-import cookieParser from "cookie-parser"
+import cookieParser from "cookie-parser";
+import cors from "cors";
 
 const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true
+}));
 
 app.use('/api/auth', authRouter);
 app.use('/api/v1', mainRouter);
