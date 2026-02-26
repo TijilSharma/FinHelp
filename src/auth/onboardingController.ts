@@ -1,6 +1,7 @@
 import type { Request, Response } from "express"
-import { onboardingWrite } from "../db/db.controller.ts";
+import { checkUser, onboardingWrite } from "../db/db.controller.ts";
 import { sendResponse } from "../utils/response.ts";
+import sql from "../utils/db.ts";
 
 export type onboardingData = {
     uid: string,
@@ -10,7 +11,6 @@ export type onboardingData = {
     monthlyWants: number,
     emergencyFund: number,
     riskProfile: 5 | 8 | 11,
-    hasDebts: boolean
 }
 
 export const onboardingController = async (req: Request,res: Response)=>{
@@ -22,11 +22,20 @@ export const onboardingController = async (req: Request,res: Response)=>{
     const monthlyWants = req.body.monthlyWants;
     const emergencyFund = req.body.emergencyFund;
     const riskProfile = req.body.riskProfile;
-    const hasDebts = req.body.hasDebts;
 
-    const payload = {uid, monthlyIncome, monthlyNeeds, miscNeeds, monthlyWants, emergencyFund, riskProfile, hasDebts};
+    const userData: any = await checkUser(uid);
+
+    if(userData.length > 0){
+        if(userData[0].onboarded){
+            return sendResponse(res, 409, "User already Onboarded", false);
+        }
+    }
+
+    const payload = {uid, monthlyIncome, monthlyNeeds, miscNeeds, monthlyWants, emergencyFund, riskProfile};
 
     const data = await onboardingWrite(payload);
+
+    await sql`UPDATE PUBLIC.USERS SET ONBOARDED = TRUE WHERE UID = ${uid}`
 
     sendResponse(res, 200, "Succesfully Onboarded", data, true);
 

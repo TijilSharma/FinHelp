@@ -5,7 +5,6 @@ import { signToken } from "../utils/jwt.ts";
 
 export type Payload = {
   token: string
-  onBoarded: boolean
 }
 
 export function googleController(req:Request, res:Response){
@@ -78,23 +77,23 @@ export const callbackController = async (req: Request, res: Response) => {
     const existingUser = await checkUser(id);
     if(existingUser.length === 0){
         await createUser(id, name, email, picture);
-        isOnboarded = false;
-        
+               
     }
+    const user: any = await checkUser(id);
+
     const jwtToken = signToken(id);
 
-    const payload:Payload = {
-      token: jwtToken,
-      onBoarded: isOnboarded
+    res.cookie("token", jwtToken, {
+      httpOnly: true,
+      secure: false, // true in production (HTTPS)
+      sameSite: "lax",
+    });
+
+    if(!user[0].onboarded){
+      return res.redirect(`${process.env.FRONTEND_URL}/onboarding`)
     }
 
-    return sendResponse(
-      res,
-      200,
-      "Authenticated Successfully",
-      payload,
-      true
-    );
+    return res.redirect(`${process.env.FRONTEND_URL}/dashboard`)
   } catch (error) {
     console.log(error)
     return sendResponse(res, 500, "Authentication Failed", false);
