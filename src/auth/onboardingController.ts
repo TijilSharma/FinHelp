@@ -5,12 +5,12 @@ import sql from "../utils/db.ts";
 
 export type onboardingData = {
     uid: string,
-    monthlyIncome: number,
-    monthlyNeeds: number,
-    miscNeeds: number,
-    monthlyWants: number,
-    emergencyFund: number,
-    riskProfile: 5 | 8 | 11,
+    income: number,
+    needs: number,
+    misc: number,
+    wants: number,
+    emergency_fund: number,
+    risk_profile: 5 | 8 | 11,
 }
 
 export const onboardingController = async (req: Request,res: Response)=>{
@@ -31,7 +31,7 @@ export const onboardingController = async (req: Request,res: Response)=>{
         }
     }
 
-    const payload = {uid, monthlyIncome, monthlyNeeds, miscNeeds, monthlyWants, emergencyFund, riskProfile};
+    const payload = {uid, income:monthlyIncome, needs: monthlyNeeds, misc: miscNeeds, wants: monthlyWants, emergency_fund: emergencyFund, risk_profile: riskProfile};
 
     const data = await onboardingWrite(payload);
 

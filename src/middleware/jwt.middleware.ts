@@ -4,16 +4,21 @@ import { verifyToken } from "../utils/jwt.ts";
 
 
 export const jwtMiddleware = (req: Request, res: Response, next: NextFunction)=>{
-    const token = req.cookies.token;
+    try{
+        const token = req.cookies.token;
 
-    if(!token){
-        return sendResponse(res,401,"Unauthorized", false)
+        if(!token){
+            return sendResponse(res,401,"Unauthorized", false)
+        }
+        const decoded = verifyToken(token);
+
+        req.user = decoded;
+
+        next();
     }
-    const decoded = verifyToken(token);
-
-    req.user = decoded;
-
-    next();
+    catch(error){
+        return sendResponse(res, 400, "Error", error, false);
+    }
 
     
 }
