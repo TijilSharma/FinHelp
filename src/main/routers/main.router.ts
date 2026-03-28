@@ -3,12 +3,13 @@ import express from "express";
 import { jwtMiddleware } from "../../middleware/jwt.middleware.ts";
 import { dashboardData } from "../controllers/dashboard.controller.ts";
 import { addDebt, getDebts } from "../controllers/addDebt.controller.ts";
+import { getUSP } from "../controllers/usp.controller.ts";
 
 const mainRouter: Router = express.Router();
 
 mainRouter.get('/dashboard', jwtMiddleware, dashboardData);
-mainRouter.post('/addDebt', addDebt);
-mainRouter.get('/getdebts', getDebts);
-// mainRouter.get('/optimizedApproach', jwtMiddleware);
+mainRouter.post('/addDebt', jwtMiddleware, addDebt);
+mainRouter.get('/getdebts', jwtMiddleware, getDebts);
+mainRouter.get('/optimizedApproach', jwtMiddleware, getUSP);
 
 export default mainRouter

@@ -16,5 +16,5 @@ export const createUser = async (
 };
 
 export const onboardingWrite = async (payload: onboardingData) => {
-  return await sql`INSERT INTO PUBLIC.PROFILE(uid, income, needs, misc, wants, emergency_fund, risk_profile, debts) VALUES (${payload.uid}, ${payload.income}, ${payload.needs}, ${payload.misc}, ${payload.wants}, ${payload.emergency_fund}, ${payload.risk_profile})`;
+  return await sql`INSERT INTO PUBLIC.PROFILE(uid, income, needs, misc, wants, emergency_fund, risk_profile) VALUES (${payload.uid}, ${payload.income}, ${payload.needs}, ${payload.misc}, ${payload.wants}, ${payload.emergency_fund}, ${payload.risk_profile})`;
 };

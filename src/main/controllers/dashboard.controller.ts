@@ -17,7 +17,7 @@ export const dashboardData = async (req: Request,res: Response)=>{
             return sendResponse(res, 404, "User Not Found", false);
         }
 
-        if(!isValid){
+        if(!isValid || !isValid.onboarded){
             return sendResponse(res, 406, "Not Acceptable: User is not Onboarded");
         }
 

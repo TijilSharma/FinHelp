@@ -14,7 +14,7 @@ export type onboardingData = {
 }
 
 export const onboardingController = async (req: Request,res: Response)=>{
-
+    try{
     const uid = req.user.id;
     const monthlyIncome = req.body.monthlyIncome;
     const monthlyNeeds = req.body.monthlyNeeds;
@@ -38,6 +38,9 @@ export const onboardingController = async (req: Request,res: Response)=>{
     await sql`UPDATE PUBLIC.USERS SET ONBOARDED = TRUE WHERE UID = ${uid}`
 
     sendResponse(res, 200, "Succesfully Onboarded", data, true);
-
+    }
+    catch(error){
+        sendResponse(res, 400, "Error",error, false);
+    }
 
 }

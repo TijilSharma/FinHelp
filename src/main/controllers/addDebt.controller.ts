@@ -7,8 +7,7 @@ import type { onboardingData } from "../../auth/onboardingController.ts";
 
 export const addDebt = async (req: Request, res: Response) => {
     try{
-        // const uid = req.user.id;
-        const uid = "101179884359405625352";
+        const uid = req.user.id;
         const check = await sql`SELECT * FROM PUBLIC.DEBTS WHERE UID=${uid}`;
 
         if(check.length ===0){
@@ -26,7 +25,7 @@ export const addDebt = async (req: Request, res: Response) => {
 };
 
 export const getDebts = async (req: Request, res: Response)=>{
-    const uid = "101179884359405625352";
+    const uid = req.user.id;
     const debts: Debt[] = await sql`SELECT * FROM PUBLIC.DEBTS WHERE UID=${uid}`;
     const profile: onboardingData[] = await sql`SELECT * FROM PUBLIC.PROFILE WHERE UID=${uid}`;
 
