@@ -99,3 +99,8 @@ export const callbackController = async (req: Request, res: Response) => {
     return sendResponse(res, 500, "Authentication Failed", false);
   }
 };
+
+export const logoutController = (req: Request, res: Response)=>{
+  res.clearCookie('token');
+  res.redirect(`${process.env.FRONTEND_URL}/`);
+}

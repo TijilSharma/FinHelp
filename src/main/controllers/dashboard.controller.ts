@@ -44,3 +44,10 @@ export const dashboardData = async (req: Request,res: Response)=>{
     }
 
 }
+
+export const getProfile = async(req: Request, res: Response)=>{
+    const uid = req.user.id;
+    const data = await sql`SELECT * FROM PUBLIC.USERS WHERE UID=${uid}`
+
+    return sendResponse(res, 200, "User Data", data, true);
+}

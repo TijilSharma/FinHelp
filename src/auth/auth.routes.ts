@@ -9,6 +9,6 @@ const authRouter:Router = express.Router();
 authRouter.get('/google', googleController);
 authRouter.get('/callback',callbackController);
 authRouter.post('/onboard',jwtMiddleware,onboardingController);
-// authRouter.get('/logout')
+authRouter.get('/logout', jwtMiddleware);
 
 export default authRouter

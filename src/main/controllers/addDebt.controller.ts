@@ -85,3 +85,13 @@ export const getDebts = async (req: Request, res: Response)=>{
     }, true)    
 
 }
+
+export const deleteDebt = async (req: Request, res: Response)=>{
+    try{
+        const del = await sql`DELETE FROM PUBLIC.DEBTS WHERE ID='${req.body.id}'`
+        return sendResponse(res, 200, "Deleted Succesfully", del, true);
+    }
+    catch(error){
+        return sendResponse(res, 400, "Unsuccessful attempt to delete record", error, false);
+    }
+}
